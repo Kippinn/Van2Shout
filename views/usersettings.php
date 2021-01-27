@@ -36,9 +36,9 @@ echo $this->Form->Errors();
 			foreach($UserRoles as $UserRole)
 			{
 				$color = C('Plugin.Van2Shout.'.$UserRole["Name"], 'Default');
-				if($color == '')
+				if($color == '') {
 					$color = 'Default';
-
+				}
 				$data[$UserRole["Name"]] = $UserRole["Name"]." (".$color.")";
 			}
 

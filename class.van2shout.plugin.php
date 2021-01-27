@@ -16,10 +16,10 @@
 //	 along with Van2Shout.  If not, see <http://www.gnu.org/licenses/>.
 
 // define the plugin:
-$PluginInfo['Van2Shout'] = array(
+$PluginInfo['van2shout'] = array(
 	'Name' => 'Van2Shout',
 	'Description' => 'A simple shoutbox for vanilla2 with support for different groups and private messages',
-	'Version' => '1.061',
+	'Version' => '1.062',
 	'Author' => 'Caerostris',
 	'AuthorEmail' => 'caerostris@gmail.com',
 	'AuthorUrl' => 'http://caerostris.com',
@@ -44,6 +44,17 @@ class Van2ShoutPlugin extends Gdn_Plugin {
 	// include van2shout in the discussions controller
 	public function DiscussionsController_Render_Before($Sender) {
 		if(!C('Plugin.Van2Shout.DisplayTarget.DiscussionsController', true))
+			return;
+
+		$this->_prepare_v2s($Sender);
+
+		include_once(PATH_PLUGINS.DS.'Van2Shout'.DS.'modules'.DS.'class.van2shoutdiscussionsmodule.php');
+		$Van2ShoutDiscussionsModule = new Van2ShoutDiscussionsModule($Sender);
+		$Sender->AddModule($Van2ShoutDiscussionsModule);
+	}
+	
+	public function CategoriesController_Render_Before($Sender) {
+		if(!C('Plugin.Van2Shout.DisplayTarget.CategoriesController', true))
 			return;
 
 		$this->_prepare_v2s($Sender);
@@ -131,6 +142,7 @@ class Van2ShoutPlugin extends Gdn_Plugin {
 		$Schema['Plugin.Van2Shout.Firebase.Url'] = array('LabelCode' => 'Firebase.Url', 'Control' => 'Input', 'Default' => C('Plugin.Van2Shout.Firebase.Url', ''));
 		$Schema['Plugin.Van2Shout.Firebase.Secret'] = array('LabelCode' => 'Firebase.Secret', 'Control' => 'Input', 'Default' => C('Plugin.Van2Shout.Firebase.Secret', ''));
 		$Schema['Plugin.Van2Shout.DisplayTarget.DiscussionsController'] = array('LabelCode' => 'AssetContent', 'Control' => 'Checkbox', 'Default' => C('Plugin.Van2Shout.DisplayTarget.DiscussionsController', true));
+		$Schema['Plugin.Van2Shout.DisplayTarget.CategoriesController'] = array('LabelCode' => 'AssetContent', 'Control' => 'Checkbox', 'Default' => C('Plugin.Van2Shout.DisplayTarget.CategoriesController', true));
 		$Schema['Plugin.Van2Shout.DisplayTarget.Page'] = array('LabelCode' => 'AssetContent', 'Control' => 'Checkbox', 'Default' => C('Plugin.Van2Shout.DisplayTarget.Page', false));
 		$Schema['Plugin.Van2Shout.Timestamp'] = array('LabelCode' => 'Timestamp', 'Control' => 'Checkbox', 'Default' => C('Plugin.Van2Shout.Timestamp', true));
 		$Schema['Plugin.Van2Shout.SendText'] = array('LabelCode' => 'SendText', 'Control' => 'Input', 'Default' => C('Plugin.Van2Shout.SendText', 'Send'));
@@ -200,17 +212,17 @@ class Van2ShoutPlugin extends Gdn_Plugin {
 		if($Session->CheckPermission('Plugins.Van2Shout.View'))
 		{
 			// add js & css requirements
-			$Sender->AddJsFile('van2shout.js', 'plugins/Van2Shout/js');
-			$Sender->AddJsFile('cssemoticons.min.js', 'plugins/Van2Shout/js');
-			$Sender->AddJsFile('moment.min.js', 'plugins/Van2Shout/js');
-			$Sender->AddCssFile('van2shout.css', 'plugins/Van2Shout/css');
-			$Sender->AddCssFile('jquery.cssemoticons.css', 'plugins/Van2Shout/css');
+			$Sender->AddJsFile('van2shout.js', 'plugins/van2shout');
+			$Sender->AddJsFile('cssemoticons.min.js', 'plugins/van2shout');
+			$Sender->AddJsFile('moment.min.js', 'plugins/van2shout');
+			$Sender->AddCssFile('van2shout.css', 'plugins/van2shout');
+			$Sender->AddCssFile('jquery.cssemoticons.css', 'plugins/van2shout');
 
 			// include firebase script?
 			if(C('Plugin.Van2Shout.Firebase.Enable', false))
 			{
 				// add firebase requirements
-				$Sender->AddJsFile('van2shout.firebase.js', 'plugins/Van2Shout/js');
+				$Sender->AddJsFile('van2shout.firebase.js', 'plugins/van2shout');
 				$Sender->Head->AddString("\n<script src='https://cdn.firebase.com/v0/firebase.js'></script>");
 
 				include_once(PATH_ROOT.DS.plugins.DS.'Van2Shout'.DS.'firebase'.DS.'v2s.php');
@@ -222,7 +234,7 @@ class Van2ShoutPlugin extends Gdn_Plugin {
 				$Sender->AddDefinition('Van2ShoutFirebaseToken', fb_get_token());
 			} else {
 				// add the script for a local backend
-				$Sender->AddJsFile('van2shout.local.js', 'plugins/Van2Shout/js');
+				$Sender->AddJsFile('van2shout.local.js', 'plugins/van2shout');
 				$Sender->AddDefinition('Van2ShoutUpdateInterval', C('Plugin.Van2Shout.Interval', 5) * 1000);
 			}
 

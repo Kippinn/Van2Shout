@@ -19,114 +19,106 @@ $Session = GDN::Session();
 echo $this->Form->Open();
 echo $this->Form->Errors();
 ?>
-
-<h1>
-	<p style="font-size:18px"><?php echo T('Van2Shout'); ?></p>
-</h1>
-
-<div style="margin-left:20px;">
-	<br /><b>Use firebase for a faster chat!</b><br />
-	Firebase is a service which provides hyper-fast and flexible databases.<br />
-	The free plan should provide enough resources for all shoutboxes.<br />
-	Sign up at <b><a href='https://firebase.com' target='_blank'>firebase.com</a></b> and add the <b><a href="/<?php echo (Gdn::Request()->WebRoot().'/plugins/Van2Shout/firebase/rules.html'); ?>" class="SignInPopup">Firebase security rules</a></b><br />
-	<a href="javascript:reset_tokens();">Reset firebase tokens</a><br />
-	<br />
-</div>
-
-<table class="AltColumns">
-	<thead align="left">
-		<tr>
-			<th width="25%">Firebase</th><th></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr><td>Enable Firebase</td><td><?php echo $this->Form->CheckBox('Plugin.Van2Shout.Firebase.Enable', ''); ?></td></tr>
-		<tr><td>Firebase URL</td><td><?php echo $this->Form->Input('Plugin.Van2Shout.Firebase.Url'); ?></td></tr>
-		<tr><td>Firebase secret</td><td><?php echo $this->Form->Input('Plugin.Van2Shout.Firebase.Secret'); ?></td></tr>
-	</tbody>
-</table>
-
-<table class="AltColumns">
-	<thead align="left">
-		<tr>
-			<th width="25%">Option</th><th>Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr><td>Display on the discussions page</td><td><?php echo $this->Form->CheckBox('Plugin.Van2Shout.DisplayTarget.DiscussionsController', ''); ?></td></tr>
-		<tr><td>Display on a separate page</td><td><?php echo $this->Form->CheckBox('Plugin.Van2Shout.DisplayTarget.Page', ''); ?></td></tr>
-		<tr><td>Show timestamp</td><td><?php echo $this->Form->CheckBox('Plugin.Van2Shout.Timestamp', ''); ?></td></tr>
-		<tr><td>'Send' button text</td><td><?php echo $this->Form->Input('Plugin.Van2Shout.SendText'); ?></td></tr>
-		<tr><td>Timestamp colour<br />(Default: gray)</td><td><?php echo $this->Form->Input('Plugin.Van2Shout.TimeColour'); ?></td></tr>
-		<tr><td>Update interval in seconds<br />(Default: 5)</td><td><?php echo $this->Form->Input('Plugin.Van2Shout.Interval'); ?></td></tr>
-		<tr><td>Number of messages to display<br />(Default: 50)</td><td><?php echo $this->Form->Input('Plugin.Van2Shout.MsgCount'); ?></td></tr>
-		<tr><td>Default colour (leave empty for theme default)</td><td><?php echo $this->Form->Input('Plugin.Van2Shout.Default'); ?></td></tr>
-	</tbody>
-</table>
-
-<table class="AltColumns">
-	<thead align="left">
-		<tr>
-			<th width="20%">Role</th><th>Colour <a href="javascript:gdn.informMessage('Any HTML compatible colour (e.g. a hex colour)');">?</a></th></th>
-		</tr>
-	</thead>
-	<tbody>
+	<section class="content">
+		<h1><?php echo t('Van2Shout Settings'); ?></h1>
+	<ul>
+        <li class="form-group">
+            <div class="label-wrap">
+                <?php echo $this->Form->label('Firebase'); ?>
+                <div class="info"><?php echo t("Firebase is a service which provides hyper-fast and flexible databases. The free plan should provide enough resources for all shoutboxes. Sign up at <b><a href='https://firebase.com' target='_blank'>firebase.com</a></b>"); ?></div>
+            </div>
+            <div class="input-wrap">
+                <?php echo $this->Form->CheckBox('Plugin.Van2Shout.Firebase.Enable', 'Enable Firebase'); ?>
+            </div>
+        </li>
+		<li class="form-group">
+            <div class="label-wrap">
+                <?php echo $this->Form->label('Firbase URL'); ?>
+            </div>
+            <div class="input-wrap">
+                <?php echo $this->Form->Input('Plugin.Van2Shout.Firebase.Url'); ?>
+            </div>
+        </li>
+		<li class="form-group">
+            <div class="label-wrap">
+                <?php echo $this->Form->label('Firbase Secret'); ?>
+            </div>
+            <div class="input-wrap">
+                <?php echo $this->Form->Input('Plugin.Van2Shout.Firebase.Secret'); ?>
+            </div>
+        </li>
+		<li class="form-group">
+            <div class="label-wrap">
+                <?php echo $this->Form->label('Various settings'); ?>
+            </div>
+            <div class="input-wrap">
+                <?php echo $this->Form->CheckBox('Plugin.Van2Shout.DisplayTarget.DiscussionsController', 'Show on the Discussions Page'); ?>
+                <?php echo $this->Form->CheckBox('Plugin.Van2Shout.DisplayTarget.CategoriesController', 'Show on the Categories Page'); ?>
+				<?php echo $this->Form->CheckBox('Plugin.Van2Shout.DisplayTarget.Page', 'Show on a seperate page'); ?>		
+				<?php echo $this->Form->CheckBox('Plugin.Van2Shout.Timestamp', 'Show Timestamp'); ?>
+            </div>
+        </li>
+		<li class="form-group">
+            <div class="label-wrap">
+                <?php echo $this->Form->label('"Send" Button text'); ?>
+            </div>
+            <div class="input-wrap">
+                <?php echo $this->Form->Input('Plugin.Van2Shout.SendText'); ?>		
+            </div>
+        </li>
+		<li class="form-group">
+            <div class="label-wrap">
+                <?php echo $this->Form->label('Timestamp Colour'); ?>
+				<div class="info"><?php echo t('Default: Gray'); ?></div>
+            </div>
+            <div class="input-wrap">
+                <?php echo $this->Form->Input('Plugin.Van2Shout.TimeColour'); ?>		
+            </div>
+        </li>
+		<li class="form-group">
+            <div class="label-wrap">
+                <?php echo $this->Form->label('Update interval in seconds'); ?>
+				<div class="info"><?php echo t('Default: 5'); ?></div>
+            </div>
+            <div class="input-wrap">
+                <?php echo $this->Form->Input('Plugin.Van2Shout.Interval'); ?>		
+            </div>
+        </li>
+		<li class="form-group">
+            <div class="label-wrap">
+                <?php echo $this->Form->label('Amount of messages to display'); ?>
+				<div class="info"><?php echo t('Default: 50'); ?></div>
+            </div>
+            <div class="input-wrap">
+                <?php echo $this->Form->Input('Plugin.Van2Shout.MsgCount'); ?>		
+            </div>
+        </li>
+		<li class="form-group">
+            <div class="label-wrap">
+                <?php echo $this->Form->label('Default user colour'); ?>
+				<div class="info"><?php echo t('Default: theme default'); ?></div>
+            </div>
+            <div class="input-wrap">
+                <?php echo $this->Form->Input('Plugin.Van2Shout.Default'); ?>		
+            </div>
+        </li>
+		<li class="form-group">
+            <div class="label-wrap">
+				<?php echo t('Role'); ?>
+			</div>
+			<div class="input-wrap">
+				<?php echo t('Colour'); ?> <a href="javascript:gdn.informMessage('Any HTML compatible colour (e.g. a hex colour)');">?</a>
+			</div>
+		</li>
 		<?php
 			$RoleModel = new RoleModel();
 			$Roles = $RoleModel->Get();
 			while($role = $Roles->Value('Name', NULL))
 			{
-				echo "<tr><td>" . $role . "</td><td>" . $this->Form->Input('Plugin.Van2Shout.'.$role) . "</td></tr>";
+				$inputRole = $this->Form->Input('Plugin.Van2Shout.'.$role);
+				echo '<li class="form-group"><div class="label-wrap">' . $role . '</div><div class="input-wrap">' . $inputRole . '</div></li>';
 			}
 		?>
-	</tbody>
-</table><br />
-<input type="submit" class="Button" value="Save" />
-<?php
-echo $this->Form->Close();
-?>
-
-<script type="text/javascript">
-	var firebase_cb = $("#Form_Plugin-dot-Van2Shout-dot-Firebase-dot-Enable");
-
-	function reset_tokens() {
-		$.get(gdn.url('plugin/Van2ShoutData?reset_tokens=1'), function(data) {
-			gdn.informMessage("Tokens reset.");
-		});
-	}
-
-	$('input[type=submit].Button').click(function(e) {
-		if(firebase_cb.attr('checked') == 'checked')
-			reset_tokens();
-		enable_firebase_inputs();
-	});
-
-	firebase_cb.on('change', function(e) {
-		check_firebase_inputs();
-	});
-
-	function check_firebase_inputs() {
-		if(firebase_cb.attr('checked') == 'checked') {
-			enable_firebase_inputs();
-		} else {
-			disable_firebase_inputs();
-		}
-	}
-	check_firebase_inputs();
-
-	function enable_firebase_inputs() {
-		$("#Form_Plugin-dot-Van2Shout-dot-Firebase-dot-Url").prop('disabled', false);
-		$("#Form_Plugin-dot-Van2Shout-dot-Firebase-dot-Secret").prop('disabled', false);
-	}
-
-	function disable_firebase_inputs() {
-		$("#Form_Plugin-dot-Van2Shout-dot-Firebase-dot-Url").prop('disabled', true);
-		$("#Form_Plugin-dot-Van2Shout-dot-Firebase-dot-Secret").prop('disabled', true);
-	}
-</script>
-
-<style type='text/css'>
-	.InputBox:disabled {
-		color: #C0C0C0;
-	}
-</style>
+    </ul>
+<?php echo $this->Form->close('Save'); ?>
+</section>

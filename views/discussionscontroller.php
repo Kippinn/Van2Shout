@@ -32,4 +32,5 @@ echo "<h4>".T('Shoutbox')."</h4>\n";
 		echo "<img src='".Gdn::Request()->Domain()."/".Gdn::Request()->Webroot()."/applications/dashboard/design/images/progress.gif' style='display:none;' id='shoutboxloading' />\n";
 		echo "<input type='submit' value='".T(C('Plugin.Van2Shout.SendText', 'Send'))."' id='van2shoutsubmit' name='van2shoutsubmit' class='Button' />\n</form>\n";
 	}
+echo '</div>';
 ?>

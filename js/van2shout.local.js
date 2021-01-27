@@ -74,7 +74,7 @@ function SubmitMessage() {
 }
 
 function DeletePost(id) {
-	$.get(gdn.url('plugin/Van2ShoutData&del=' + id), function(data) {});
+	$.get(gdn.url('plugin/Van2ShoutData?del=' + id), function(data) {});
 	setTimeout(UpdateShoutbox, 10);
 	alert("Message deleted");
 }

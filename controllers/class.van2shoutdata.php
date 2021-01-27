@@ -15,7 +15,7 @@
 //	 You should have received a copy of the GNU General Public License
 //	 along with Van2Shout.  If not, see <http://www.gnu.org/licenses/>.
 
-class Van2ShoutData extends Gdn_Module {
+class Van2ShoutData extends VanillaController {
 
 	public function __connstruct($Sender = '') {
 		parent::__construct($Sender);
